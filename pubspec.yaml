@@ -1,4 +1,4 @@
-name: nasa_galllery
+name: nasa_gallery
 description: A NASA Gallery App
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
