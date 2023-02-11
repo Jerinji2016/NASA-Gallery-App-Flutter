@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 
+import 'routes.dart';
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(
-    const NASAGalleryApp(),
+    MaterialApp(
+      onGenerateRoute: Routes.onGenerateRoute,
+      initialRoute: Routes.imageGrid,
+      theme: ThemeData(
+        fontFamily: "Poppins",
+      ),
+    ),
   );
-}
-
-class NASAGalleryApp extends StatelessWidget {
-  const NASAGalleryApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold();
-  }
 }
