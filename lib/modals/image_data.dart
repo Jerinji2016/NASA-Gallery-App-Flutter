@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
 typedef ImageDataList = List<ImageData>;
@@ -5,6 +6,8 @@ typedef ImageDataIterable = Iterable<ImageData>;
 
 class ImageData {
   final Map<String, dynamic> _json;
+
+  final Key key = UniqueKey();
 
   ImageData(this._json);
 
