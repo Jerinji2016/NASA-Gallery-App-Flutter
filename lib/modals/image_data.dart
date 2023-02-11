@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 typedef ImageDataList = List<ImageData>;
 typedef ImageDataIterable = Iterable<ImageData>;
 
@@ -9,6 +11,10 @@ class ImageData {
   String get copyright => _json["copyright"];
 
   String get _dateString => _json["date"];
+
+  DateTime get date => DateTime.parse(_dateString);
+
+  String get formattedDate => DateFormat("dd MMMM yyyy").format(date);
 
   String get title => _json["title"];
 
