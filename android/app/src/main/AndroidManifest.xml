@@ -1,6 +1,7 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.jerin.nasa_gallery">
    <application
-        android:label="nasa_galllery"
+        android:label="NASA Gallery App"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

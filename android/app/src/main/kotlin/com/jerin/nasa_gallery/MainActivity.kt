@@ -1,4 +1,4 @@
-package com.jerin.nasa_galllery
+package com.jerin.nasa_gallery
 
 import io.flutter.embedding.android.FlutterActivity
 
