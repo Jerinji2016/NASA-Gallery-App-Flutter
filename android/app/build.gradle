@@ -57,7 +57,7 @@ android {
             signingConfig signingConfigs.debug
         }
     }
-    namespace 'com.jerin.nasa_galllery'
+    namespace 'com.jerin.nasa_gallery'
 }
 
 flutter {
