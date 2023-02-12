@@ -7,12 +7,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:nasa_galllery/main.dart';
+import 'package:nasa_gallery/main.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const NASAGalleryApp());
+    await tester.pumpWidget(const NASAGalleryApp(data: ""));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
