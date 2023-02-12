@@ -1,9 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:nasa_gallery/provider/data_provider.dart';
 
-import 'modals/image_data.dart';
 import 'routes.dart';
 
 void main() async {
@@ -12,44 +10,33 @@ void main() async {
   String data = await rootBundle.loadString('assets/data.json');
 
   runApp(
-    DataProvider(
+    NASAGalleryApp(
       data: data,
-      child: MaterialApp(
-        onGenerateRoute: Routes.onGenerateRoute,
-        initialRoute: Routes.imageGrid,
-        theme: ThemeData(
-          fontFamily: "Poppins",
-        ),
-      ),
     ),
   );
 }
 
-/// Global Data Provider
-class DataProvider extends InheritedWidget {
-  final ImageDataList _images = [];
+class NASAGalleryApp extends StatelessWidget {
+  final String data;
 
-  ImageDataIterable get images => _images;
-
-  DataProvider({
+  const NASAGalleryApp({
     Key? key,
-    required String data,
-    required Widget child,
-  }) : super(key: key, child: child) {
-    List items = jsonDecode(data);
-    for (Map<String, dynamic> item in items) {
-      _images.add(ImageData(item));
-    }
-  }
-
-  static DataProvider of(BuildContext context) {
-    final DataProvider? result = context.dependOnInheritedWidgetOfExactType<DataProvider>();
-    assert(result != null, 'No DataProvider found in context');
-    return result!;
-  }
+    required this.data,
+  }) : super(key: key);
 
   @override
-  bool updateShouldNotify(DataProvider oldWidget) {
-    return false;
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: DataProvider(
+        data: data,
+        child: MaterialApp(
+          onGenerateRoute: Routes.onGenerateRoute,
+          initialRoute: Routes.imageGrid,
+          theme: ThemeData(
+            fontFamily: "Poppins",
+          ),
+        ),
+      ),
+    );
   }
 }
