@@ -26,16 +26,15 @@ class NASAGalleryApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: DataProvider(
-        data: data,
-        child: MaterialApp(
-          onGenerateRoute: Routes.onGenerateRoute,
-          initialRoute: Routes.imageGrid,
-          theme: ThemeData(
-            fontFamily: "Poppins",
-          ),
+    return DataProvider(
+      data: data,
+      child: MaterialApp(
+        onGenerateRoute: Routes.onGenerateRoute,
+        initialRoute: Routes.imageGrid,
+        theme: ThemeData(
+          fontFamily: "Poppins",
         ),
+        builder: (context, child) => SafeArea(child: child!),
       ),
     );
   }
