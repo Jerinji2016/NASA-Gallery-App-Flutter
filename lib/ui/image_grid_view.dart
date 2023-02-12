@@ -7,7 +7,7 @@ import 'package:nasa_gallery/modals/image_data.dart';
 import '../provider/data_provider.dart';
 import '../routes.dart';
 
-const Color disabledColor = Color(0xFF3B3B3B);
+const Color disabledColor = Color(0xFF595959);
 
 class ImageGridView extends StatelessWidget {
   const ImageGridView({Key? key}) : super(key: key);
