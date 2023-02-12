@@ -7,6 +7,8 @@ import 'package:nasa_gallery/modals/image_data.dart';
 import '../provider/data_provider.dart';
 import '../routes.dart';
 
+const Color disabledColor = Color(0xFF3B3B3B);
+
 class ImageGridView extends StatelessWidget {
   const ImageGridView({Key? key}) : super(key: key);
 
@@ -22,7 +24,7 @@ class ImageGridView extends StatelessWidget {
             delegate: _CustomHeaderDelegate(),
           ),
           SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 2.0),
+            padding: const EdgeInsets.symmetric(horizontal: 2.0, vertical: 2),
             sliver: SliverGrid(
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
@@ -36,6 +38,23 @@ class ImageGridView extends StatelessWidget {
                 crossAxisSpacing: 2.0,
                 mainAxisSpacing: 2.0,
               ),
+            ),
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                const SizedBox(height: 60.0),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+                  child: Text(
+                    "version 1.0.0",
+                    style: TextStyle(
+                      color: disabledColor,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -126,7 +145,7 @@ class _CustomHeaderDelegate extends SliverPersistentHeaderDelegate {
                     child: Text(
                       '$imagesCount photos',
                       style: const TextStyle(
-                        color: Color(0xFF3B3B3B),
+                        color: disabledColor,
                         fontSize: 12.0,
                       ),
                     ),
