@@ -21,48 +21,6 @@ class ImageGridView extends StatelessWidget {
           SliverPersistentHeader(
             delegate: _CustomHeaderDelegate(),
           ),
-          // SliverAppBar(
-          //   backgroundColor: Colors.transparent,
-          //   automaticallyImplyLeading: false,
-          //   actions: <Widget>[new Container()],
-          //   expandedHeight: 200.0,
-          //   floating: false,
-          //   pinned: false,
-          //   primary: true,
-          //   snap: false,
-          //   flexibleSpace: FlexibleSpaceBar.createSettings(
-          //     currentExtent: 120.0,
-          //     minExtent: 0,
-          //     maxExtent: 200.0,
-          //     child: FlexibleSpaceBar(
-          //       collapseMode: CollapseMode.pin,
-          //       titlePadding: const EdgeInsetsDirectional.only(start: 16, bottom: 20),
-          //       title: SingleChildScrollView(
-          //         child: Column(
-          //           mainAxisSize: MainAxisSize.min,
-          //           crossAxisAlignment: CrossAxisAlignment.start,
-          //           children: [
-          //             const Text(
-          //               'NASA Gallery App',
-          //               style: TextStyle(
-          //                 color: Colors.black,
-          //                 fontSize: 18.0,
-          //                 fontWeight: FontWeight.w600,
-          //               ),
-          //             ),
-          //             Text(
-          //               '${images.length} photos',
-          //               style: TextStyle(
-          //                 color: Theme.of(context).disabledColor,
-          //                 fontSize: 12.0,
-          //               ),
-          //             ),
-          //           ],
-          //         ),
-          //       ),
-          //     ),
-          //   ),
-          // ),
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 2.0),
             sliver: SliverGrid(
@@ -139,12 +97,7 @@ class _CustomHeaderDelegate extends SliverPersistentHeaderDelegate {
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
     DataProvider dataProvider = DataProvider.of(context);
     int imagesCount = dataProvider.images.length;
-
-    debugPrint("_CustomHeaderDelegate.build: shrink $shrinkOffset");
-
     double scale = 1 - shrinkOffset / maxExtent;
-    debugPrint("_CustomHeaderDelegate.build: scale: $scale");
-    debugPrint("_CustomHeaderDelegate.build: scale: ${scale / 2}");
 
     return Align(
       alignment: Alignment.bottomLeft,
