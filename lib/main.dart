@@ -29,6 +29,7 @@ class NASAGalleryApp extends StatelessWidget {
     return DataProvider(
       data: data,
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         onGenerateRoute: Routes.onGenerateRoute,
         initialRoute: Routes.imageGrid,
         theme: ThemeData(

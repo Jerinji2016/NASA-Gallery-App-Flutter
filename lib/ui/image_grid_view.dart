@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:nasa_gallery/modals/image_data.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../provider/data_provider.dart';
 import '../routes.dart';
@@ -44,15 +45,25 @@ class ImageGridView extends StatelessWidget {
             delegate: SliverChildListDelegate(
               [
                 const SizedBox(height: 60.0),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
-                  child: Text(
-                    "version 1.0.0",
-                    style: TextStyle(
-                      color: disabledColor,
-                      fontStyle: FontStyle.italic,
-                    ),
-                  ),
+                FutureBuilder<PackageInfo>(
+                  future: PackageInfo.fromPlatform(),
+                  builder: (context, packageInfo) {
+                    if (packageInfo.connectionState == ConnectionState.done && packageInfo.data != null) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+                        child: Text(
+                          "version ${packageInfo.data!.version}",
+                          style: const TextStyle(
+                            color: disabledColor,
+                            fontSize: 12.0,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      );
+                    }
+
+                    return const SizedBox.shrink();
+                  },
                 ),
               ],
             ),
@@ -118,44 +129,48 @@ class _CustomHeaderDelegate extends SliverPersistentHeaderDelegate {
     int imagesCount = dataProvider.images.length;
     double scale = 1 - shrinkOffset / maxExtent;
 
-    return Align(
-      alignment: Alignment.bottomLeft,
-      child: SizedBox(
-        height: minExtent * max(0.8, scale),
-        child: SingleChildScrollView(
-          physics: const NeverScrollableScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 40.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'NASA Gallery App',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 28.0 * max(0.7, scale),
-                    fontWeight: FontWeight.w500,
-                    height: 1.0,
-                  ),
-                ),
-                SingleChildScrollView(
-                  child: Opacity(
-                    opacity: max(0.0, scale / 2),
-                    child: Text(
-                      '$imagesCount photos',
-                      style: const TextStyle(
-                        color: disabledColor,
-                        fontSize: 12.0,
+    return Stack(
+      children: [
+        Align(
+          alignment: Alignment.bottomLeft,
+          child: SizedBox(
+            height: minExtent * max(0.8, scale),
+            child: SingleChildScrollView(
+              physics: const NeverScrollableScrollPhysics(),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 40.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'NASA Gallery App',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 28.0 * max(0.7, scale),
+                        fontWeight: FontWeight.w500,
+                        height: 1.0,
                       ),
                     ),
-                  ),
+                    SingleChildScrollView(
+                      child: Opacity(
+                        opacity: max(0.0, scale / 2),
+                        child: Text(
+                          '$imagesCount photos',
+                          style: const TextStyle(
+                            color: disabledColor,
+                            fontSize: 12.0,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
-      ),
+      ],
     );
   }
 
