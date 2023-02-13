@@ -130,11 +130,13 @@ class _CustomHeaderDelegate extends SliverPersistentHeaderDelegate {
 
     return Stack(
       children: [
-        const Align(
+        Align(
           alignment: Alignment.topRight,
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 10.0),
-            child: ThemeChangerIcon(),
+            padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 10.0),
+            child: ThemeChangerIcon(
+              key: UniqueKey(),
+            ),
           ),
         ),
         Align(
