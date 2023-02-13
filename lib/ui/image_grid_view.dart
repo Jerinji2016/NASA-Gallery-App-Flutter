@@ -91,12 +91,9 @@ class _GridImageTile extends StatelessWidget {
       onTap: () => _showImageDetails(context),
       child: Hero(
         tag: image.key,
-        child: Material(
-          color: Colors.transparent,
-          child: CustomImageLoader(
-            url: image.url,
-            borderRadius: 4.0,
-          ),
+        child: CustomImageLoader(
+          url: image.url,
+          borderRadius: 4.0,
         ),
       ),
     );
