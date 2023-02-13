@@ -46,17 +46,14 @@ class CustomImageLoader extends StatelessWidget {
           );
         },
         errorWidget: (context, url, error) {
-          return Shimmer.fromColors(
-            highlightColor: Colors.white24,
-            baseColor: Colors.grey[400]!,
-            period: const Duration(milliseconds: 800),
-            child: Container(
-              margin: const EdgeInsets.only(right: 0),
-              color: Colors.black,
+          return Container(
+            color: Theme.of(context).cardColor,
+            child: const Center(
+              child: Icon(
+                Icons.wifi_off_outlined,
+                color: Colors.red,
+              ),
             ),
-          );
-          return Center(
-            child: const Text("Failed"),
           );
         },
       ),

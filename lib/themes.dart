@@ -4,6 +4,7 @@ ThemeData lightTheme = ThemeData(
   fontFamily: "Poppins",
   scaffoldBackgroundColor: Colors.white,
   disabledColor: const Color(0xFF3B3B3B),
+  cardColor: Colors.grey[200]!,
   textTheme: const TextTheme(
     titleLarge: TextStyle(
       color: Colors.black,
@@ -18,6 +19,7 @@ ThemeData darkTheme = ThemeData(
   fontFamily: "Poppins",
   scaffoldBackgroundColor: Colors.black,
   disabledColor: const Color(0xFFADADAD),
+  cardColor: Colors.grey[900]!,
   textTheme: const TextTheme(
     titleLarge: TextStyle(
       color: Colors.white,
