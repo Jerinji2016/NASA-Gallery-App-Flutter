@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:nasa_gallery/modals/image_data.dart';
+import 'package:nasa_gallery/widgets/custom_image_loader.dart';
 import 'package:nasa_gallery/widgets/theme_changer_icon.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -93,27 +93,9 @@ class _GridImageTile extends StatelessWidget {
         tag: image.key,
         child: Material(
           color: Colors.transparent,
-          child: ClipRRect(
-            borderRadius: const BorderRadius.all(
-              Radius.circular(4.0),
-            ),
-            child: CachedNetworkImage(
-              imageUrl: image.url,
-              fit: BoxFit.cover,
-              progressIndicatorBuilder: (context, url, progress) {
-                return Center(
-                  child: SizedBox.square(
-                    dimension: 30.0,
-                    child: CircularProgressIndicator(
-                      value: progress.progress,
-                    ),
-                  ),
-                );
-              },
-              errorWidget: (context, url, error) {
-                return const Text("Failed");
-              },
-            ),
+          child: CustomImageLoader(
+            url: image.url,
+            borderRadius: 4.0,
           ),
         ),
       ),
