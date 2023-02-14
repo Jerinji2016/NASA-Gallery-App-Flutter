@@ -27,10 +27,6 @@ class ImageDetailsView extends StatefulWidget {
 class _ImageDetailsViewState extends State<ImageDetailsView> with SingleTickerProviderStateMixin {
   late final AnimationController controller;
 
-  double? _progress, _total, _downloaded;
-
-  bool _isHdDownloaded = false;
-
   @override
   void initState() {
     super.initState();
@@ -101,16 +97,12 @@ class _ImageDetailsViewState extends State<ImageDetailsView> with SingleTickerPr
                     ),
                     loadingBuilder: (context, imageChunkEvent) {
                       if (imageChunkEvent != null) {
-                        _downloaded = imageChunkEvent.cumulativeBytesLoaded / 1000000;
-                        _total = imageChunkEvent.expectedTotalBytes! / 1000000;
-                        _progress = imageChunkEvent.cumulativeBytesLoaded / imageChunkEvent.expectedTotalBytes!;
-
-                        if (_progress == 1.0) {
+                        double progress = imageChunkEvent.cumulativeBytesLoaded / imageChunkEvent.expectedTotalBytes!;
+                        if (progress == 1.0) {
                           SchedulerBinding.instance.addPostFrameCallback(
-                            (_) => setState(() {
-                              _isHdDownloaded = true;
-                              controller.forward(from: 0.0);
-                            }),
+                            (_) => setState(
+                              () => controller.forward(from: 0.0),
+                            ),
                           );
                         }
                       }
