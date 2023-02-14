@@ -1,9 +1,16 @@
+library image_details_view;
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:nasa_gallery/provider/data_provider.dart';
+import 'package:nasa_gallery/widgets/custom_loading_shimmer.dart';
 import 'package:photo_view/photo_view.dart';
 
-import '../modals/image_data.dart';
+import '../../modals/image_data.dart';
+
+part '_image_details_delegate.dart';
+part '_low_quality_image_placeholder.dart';
 
 class ImageDetailsView extends StatefulWidget {
   final ImageData image;
@@ -39,6 +46,29 @@ class _ImageDetailsViewState extends State<ImageDetailsView> with SingleTickerPr
   void dispose() {
     super.dispose();
     controller.dispose();
+  }
+
+  void _showImageDetails() {
+    //  todo
+    showModalBottomSheet(
+      context: context,
+      elevation: 10.0,
+      isScrollControlled: true,
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.85,
+      ),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10.0),
+          topRight: Radius.circular(10.0),
+        ),
+      ),
+      builder: (context) {
+        return _ImageDetailsDelegate(
+          image: widget.image,
+        );
+      },
+    );
   }
 
   @override
@@ -85,19 +115,13 @@ class _ImageDetailsViewState extends State<ImageDetailsView> with SingleTickerPr
                         }
                       }
 
-                      return PhotoView(
-                        backgroundDecoration: const BoxDecoration(
-                          color: Colors.transparent,
-                        ),
-                        imageProvider: CachedNetworkImageProvider(
-                          widget.image.url,
-                        ),
+                      return _LowQualityImagePlaceHolder(
+                        image: widget.image,
                       );
                     },
                     errorBuilder: (context, url, error) {
-                      return Material(
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        child: const Text("Failed to load Image"),
+                      return _LowQualityImagePlaceHolder(
+                        image: widget.image,
                       );
                     },
                   ),
@@ -107,21 +131,50 @@ class _ImageDetailsViewState extends State<ImageDetailsView> with SingleTickerPr
           ),
           Positioned(
             top: 10.0,
-            left: 10.0,
-            child: Material(
-              borderRadius: const BorderRadius.all(Radius.circular(40.0)),
-              color: Colors.transparent,
-              child: InkWell(
-                borderRadius: const BorderRadius.all(Radius.circular(40.0)),
-                onTap: () => Navigator.pop(context),
-                splashColor: Colors.white12,
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Icon(
-                    Icons.arrow_back_ios_new_outlined,
-                    color: Colors.grey[200]!,
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Material(
+                      borderRadius: const BorderRadius.all(Radius.circular(40.0)),
+                      color: Colors.transparent,
+                      child: InkWell(
+                        borderRadius: const BorderRadius.all(Radius.circular(40.0)),
+                        onTap: () => Navigator.pop(context),
+                        splashColor: Colors.white12,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Icon(
+                            Icons.arrow_back_ios_new_outlined,
+                            color: Colors.grey[600]!,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Material(
+                      borderRadius: const BorderRadius.all(Radius.circular(40.0)),
+                      color: Colors.transparent,
+                      child: InkWell(
+                        borderRadius: const BorderRadius.all(Radius.circular(40.0)),
+                        onTap: _showImageDetails,
+                        splashColor: Colors.white12,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Icon(
+                            Icons.info_outline,
+                            color: Colors.grey[600]!,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

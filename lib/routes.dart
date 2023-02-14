@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'modals/image_data.dart';
-import 'ui/image_details_view.dart';
+import 'ui/image_details_view/image_details_view.dart';
 import 'ui/image_grid_view.dart';
 
 class Routes {
