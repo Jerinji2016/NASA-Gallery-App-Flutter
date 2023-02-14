@@ -3,20 +3,19 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:nasa_gallery/modals/image_data.dart';
+import 'package:nasa_gallery/widgets/theme_changer_icon.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../provider/data_provider.dart';
 import '../routes.dart';
-
-const Color disabledColor = Color(0xFF595959);
 
 class ImageGridView extends StatelessWidget {
   const ImageGridView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    DataProvider dataProvider = DataProvider.of(context);
-    ImageDataIterable images = dataProvider.images;
+    AppDataProvider provider = AppDataProvider.of(context);
+    ImageDataIterable images = provider.images;
 
     return Scaffold(
       body: CustomScrollView(
@@ -53,8 +52,8 @@ class ImageGridView extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
                         child: Text(
                           "version ${packageInfo.data!.version}",
-                          style: const TextStyle(
-                            color: disabledColor,
+                          style: TextStyle(
+                            color: Theme.of(context).disabledColor,
                             fontSize: 12.0,
                             fontStyle: FontStyle.italic,
                           ),
@@ -125,14 +124,23 @@ class _GridImageTile extends StatelessWidget {
 class _CustomHeaderDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
-    DataProvider dataProvider = DataProvider.of(context);
-    int imagesCount = dataProvider.images.length;
+    AppDataProvider provider = AppDataProvider.of(context);
+    int imagesCount = provider.images.length;
     double scale = 1 - shrinkOffset / maxExtent;
 
     return Stack(
       children: [
         Align(
-          alignment: Alignment.bottomLeft,
+          alignment: Alignment.topRight,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 10.0),
+            child: ThemeChangerIcon(
+              key: UniqueKey(),
+            ),
+          ),
+        ),
+        Align(
+          alignment: Alignment.topLeft,
           child: SizedBox(
             height: minExtent * max(0.8, scale),
             child: SingleChildScrollView(
@@ -145,20 +153,17 @@ class _CustomHeaderDelegate extends SliverPersistentHeaderDelegate {
                   children: [
                     Text(
                       'NASA Gallery App',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 28.0 * max(0.7, scale),
-                        fontWeight: FontWeight.w500,
-                        height: 1.0,
-                      ),
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontSize: 28.0 * max(0.7, scale),
+                          ),
                     ),
                     SingleChildScrollView(
                       child: Opacity(
                         opacity: max(0.0, scale / 2),
                         child: Text(
                           '$imagesCount photos',
-                          style: const TextStyle(
-                            color: disabledColor,
+                          style: TextStyle(
+                            color: Theme.of(context).disabledColor,
                             fontSize: 12.0,
                           ),
                         ),
