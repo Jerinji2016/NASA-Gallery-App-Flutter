@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:nasa_gallery/widgets/custom_loading_shimmer.dart';
 
 class CustomImageLoader extends StatelessWidget {
   final String url;
@@ -28,15 +28,8 @@ class CustomImageLoader extends StatelessWidget {
           return Column(
             children: [
               Expanded(
-                child: Shimmer.fromColors(
-                  highlightColor: Colors.grey[300]!,
-                  baseColor: Colors.grey[400]!,
-                  period: const Duration(milliseconds: 800),
-                  child: Center(
-                    child: Container(
-                      color: Colors.blue,
-                    ),
-                  ),
+                child: CustomLoadingShimmer(
+                  key: UniqueKey(),
                 ),
               ),
               LinearProgressIndicator(

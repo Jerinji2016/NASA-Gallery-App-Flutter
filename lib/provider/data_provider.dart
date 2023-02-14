@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:nasa_gallery/main.dart';
 import 'package:provider/provider.dart';
 
@@ -41,6 +42,10 @@ class AppDataProvider extends ChangeNotifier {
   ThemeMode _theme = ThemeMode.system;
 
   ThemeMode get theme => _theme;
+
+  bool get isDarkTheme => _theme == ThemeMode.system
+      ? SchedulerBinding.instance.window.platformBrightness == Brightness.dark
+      : _theme == ThemeMode.dark;
 
   void toggleTheme() {
     debugPrint("AppDataProvider.toggleTheme: current theme: $_theme");
