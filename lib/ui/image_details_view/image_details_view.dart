@@ -27,13 +27,19 @@ class ImageDetailsView extends StatefulWidget {
 class _ImageDetailsViewState extends State<ImageDetailsView> with SingleTickerProviderStateMixin {
   late final AnimationController controller;
 
-  double? _progress, _total, _downloaded;
-
-  bool _isHdDownloaded = false;
+  late PageController pageController;
+  late AppDataProvider provider = AppDataProvider.of(context);
 
   @override
   void initState() {
     super.initState();
+
+    int initialPage = provider.images.toList().indexWhere(
+          (element) => element == widget.image,
+        );
+    pageController = PageController(
+      initialPage: initialPage,
+    );
 
     controller = AnimationController(
       vsync: this,
@@ -49,7 +55,6 @@ class _ImageDetailsViewState extends State<ImageDetailsView> with SingleTickerPr
   }
 
   void _showImageDetails() {
-    //  todo
     showModalBottomSheet(
       context: context,
       elevation: 10.0,
@@ -64,8 +69,10 @@ class _ImageDetailsViewState extends State<ImageDetailsView> with SingleTickerPr
         ),
       ),
       builder: (context) {
+        int currentPage = pageController.page!.toInt();
+        ImageData image = provider.images.elementAt(currentPage);
         return _ImageDetailsDelegate(
-          image: widget.image,
+          image: image,
         );
       },
     );
@@ -76,58 +83,65 @@ class _ImageDetailsViewState extends State<ImageDetailsView> with SingleTickerPr
     return Scaffold(
       body: Stack(
         children: [
-          Hero(
-            tag: widget.image.key,
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child: AnimatedBuilder(
-                animation: controller,
-                builder: (context, child) => Opacity(
-                  opacity: Tween<double>(begin: 0.0, end: 1.0)
-                      .animate(
-                        CurvedAnimation(
-                          parent: controller,
-                          curve: Curves.ease,
+          PageView.builder(
+            controller: pageController,
+            itemCount: provider.images.length,
+            itemBuilder: (context, index) {
+              ImageData image = provider.images.elementAt(index);
+
+              return Hero(
+                tag: image.key,
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  child: AnimatedBuilder(
+                    animation: controller,
+                    builder: (context, child) => Opacity(
+                      opacity: Tween<double>(begin: 0.0, end: 1.0)
+                          .animate(
+                            CurvedAnimation(
+                              parent: controller,
+                              curve: Curves.ease,
+                            ),
+                          )
+                          .value,
+                      child: PhotoView(
+                        backgroundDecoration: const BoxDecoration(
+                          color: Colors.black,
                         ),
-                      )
-                      .value,
-                  child: PhotoView(
-                    backgroundDecoration: const BoxDecoration(
-                      color: Colors.black,
-                    ),
-                    imageProvider: NetworkImage(
-                      widget.image.hdUrl,
-                    ),
-                    loadingBuilder: (context, imageChunkEvent) {
-                      if (imageChunkEvent != null) {
-                        _downloaded = imageChunkEvent.cumulativeBytesLoaded / 1000000;
-                        _total = imageChunkEvent.expectedTotalBytes! / 1000000;
-                        _progress = imageChunkEvent.cumulativeBytesLoaded / imageChunkEvent.expectedTotalBytes!;
+                        imageProvider: NetworkImage(
+                          image.hdUrl,
+                        ),
+                        loadingBuilder: (context, imageChunkEvent) {
+                          if (imageChunkEvent != null) {
+                            double progress =
+                                imageChunkEvent.cumulativeBytesLoaded / imageChunkEvent.expectedTotalBytes!;
+                            if (progress == 1.0) {
+                              SchedulerBinding.instance.addPostFrameCallback(
+                                (_) => mounted
+                                    ? setState(
+                                        () => controller.forward(from: 0.0),
+                                      )
+                                    : null,
+                              );
+                            }
+                          }
 
-                        if (_progress == 1.0) {
-                          SchedulerBinding.instance.addPostFrameCallback(
-                            (_) => setState(() {
-                              _isHdDownloaded = true;
-                              controller.forward(from: 0.0);
-                            }),
+                          return _LowQualityImagePlaceHolder(
+                            image: image,
                           );
-                        }
-                      }
-
-                      return _LowQualityImagePlaceHolder(
-                        image: widget.image,
-                      );
-                    },
-                    errorBuilder: (context, url, error) {
-                      return _LowQualityImagePlaceHolder(
-                        image: widget.image,
-                      );
-                    },
+                        },
+                        errorBuilder: (context, url, error) {
+                          return _LowQualityImagePlaceHolder(
+                            image: image,
+                          );
+                        },
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
+              );
+            },
           ),
           Positioned(
             top: 10.0,

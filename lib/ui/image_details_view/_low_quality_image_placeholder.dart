@@ -41,13 +41,11 @@ class _LowQualityImagePlaceHolder extends StatelessWidget {
         );
       },
       loadingBuilder: (context, imageChunkEvent) {
-        double? downloaded, total, progress;
+        double? downloaded, total;
 
-        debugPrint("_LowQualityImagePlaceHolder.build: this");
         if (imageChunkEvent != null) {
           downloaded = imageChunkEvent.cumulativeBytesLoaded / 1000000;
           total = imageChunkEvent.expectedTotalBytes! / 1000000;
-          progress = imageChunkEvent.cumulativeBytesLoaded / imageChunkEvent.expectedTotalBytes!;
         }
 
         return Material(
