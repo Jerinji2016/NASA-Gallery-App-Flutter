@@ -118,9 +118,11 @@ class _ImageDetailsViewState extends State<ImageDetailsView> with SingleTickerPr
                                 imageChunkEvent.cumulativeBytesLoaded / imageChunkEvent.expectedTotalBytes!;
                             if (progress == 1.0) {
                               SchedulerBinding.instance.addPostFrameCallback(
-                                (_) => setState(
-                                  () => controller.forward(from: 0.0),
-                                ),
+                                (_) => mounted
+                                    ? setState(
+                                        () => controller.forward(from: 0.0),
+                                      )
+                                    : null,
                               );
                             }
                           }
