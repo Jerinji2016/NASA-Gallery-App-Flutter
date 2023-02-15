@@ -45,23 +45,24 @@ class _ImageDetailsDelegate extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 4.0),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.copyright,
-                  size: 14.0,
-                  color: iconColor,
-                ),
-                const SizedBox(width: 8.0),
-                Text(
-                  image.copyright,
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-              ],
-            ),
-          ],
+            if (image.copyright != null) ...[
+              const SizedBox(height: 4.0),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.copyright,
+                    size: 14.0,
+                    color: iconColor,
+                  ),
+                  const SizedBox(width: 8.0),
+                  Text(
+                    image.copyright!,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
+              ),
+            ]
         ),
       ),
     );

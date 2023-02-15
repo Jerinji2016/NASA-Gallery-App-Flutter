@@ -11,7 +11,7 @@ class ImageData {
 
   ImageData(this._json);
 
-  String get copyright => _json["copyright"];
+  String? get copyright => _json["copyright"];
 
   String get _dateString => _json["date"];
 
