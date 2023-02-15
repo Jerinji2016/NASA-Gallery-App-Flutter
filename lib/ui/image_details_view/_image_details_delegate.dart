@@ -62,7 +62,8 @@ class _ImageDetailsDelegate extends StatelessWidget {
                   ),
                 ],
               ),
-            ]
+            ],
+          ],
         ),
       ),
     );
